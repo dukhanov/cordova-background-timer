@@ -16,6 +16,7 @@ public class BackgroundTimerService extends Service {
 
     private static Timer mTimer;
     private static TimerTask mTimerTask;
+    private static boolean timerStarted = false;
 
     public void onCreate() {
         super.onCreate();
@@ -42,14 +43,16 @@ public class BackgroundTimerService extends Service {
     }
 
     private void startTimer(int timerInterval) {
-        if (this.mTimer == null) {
-            this.mTimer = new Timer(TAG);
+        if(this.timerStarted){
+            this.stopTimer();
         }
 
-        if (this.mTimerTask == null) {
-            this.mTimerTask = getTimerTask();
-            this.mTimer.schedule(this.mTimerTask, timerInterval, timerInterval);
-        }
+        this.mTimer = new Timer(TAG);
+
+        this.mTimerTask = getTimerTask();
+        this.mTimer.schedule(this.mTimerTask, timerInterval, timerInterval);
+
+        this.timerStarted = true;
     }
 
     private void stopTimer() {
@@ -70,6 +73,8 @@ public class BackgroundTimerService extends Service {
                 Log.i(TAG, "exception has occurred - " + ex.getMessage());
             }
         }
+
+        this.timerStarted = false;
     }
 
     private TimerTask getTimerTask() {
