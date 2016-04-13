@@ -6,5 +6,5 @@ repositories{
 }
 
 dependencies {
-    compile 'de.greenrobot:eventbus:3.0.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
