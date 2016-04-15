@@ -32,7 +32,10 @@ Background Timer plugin for Cordova
 	var settings = {
 		timerInterval: 15000, // interval between ticks of the timer in milliseconds (Default: 10000)
 		startOnBoot: true, // enable this to start timer after the device was restarted (Default: false)
-		stopOnTerminate: true // set to true to force stop timer in case the app is terminated (User closed the app and etc.) (Default: true)
+		stopOnTerminate: true, // set to true to force stop timer in case the app is terminated (User closed the app and etc.) (Default: true)
+		isForeground: true, // set to true to run timer service as foreground (Default: true)
+		notificationTitle: 'TITLE', // title for the notification (Default: '')
+		notificationText: 'TEXT' // text for the notification (Default: '')
 	}
 	
     window.BackgroundTimer.start(successCallback, errorCallback, settings);

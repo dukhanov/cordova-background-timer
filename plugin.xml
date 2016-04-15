@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.skycom.cordova.background-timer"
-    version="0.0.1">
+    version="0.0.2">
 
     <name>BackgroundTimer</name>
     <description></description>
@@ -38,6 +38,10 @@
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.WAKE_LOCK" />
             <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        </config-file>
+		
+		<config-file target="res/xml/config.xml" parent="/*">
+            <preference name="KeepRunning" value="true" />
         </config-file>
 
         <config-file target="res/xml/config.xml" parent="/*">

@@ -1,22 +1,35 @@
 package com.skycom.cordova.bgt;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.media.session.MediaController;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 
 public class BackgroundTimerService extends Service {
     private static final String TAG = "BGTimer";
-    SharedPreferences mSettings;
+    private static final int NOTIFICATION_ID = -344455967;
 
-    private static Timer mTimer;
-    private static TimerTask mTimerTask;
-    private static boolean timerStarted = false;
+    private SharedPreferences mSettings;
+    private Timer mTimer;
+    private TimerTask mTimerTask;
+    private boolean timerStarted = false;
 
     public void onCreate() {
         super.onCreate();
@@ -47,8 +60,11 @@ public class BackgroundTimerService extends Service {
             this.stopTimer();
         }
 
-        this.mTimer = new Timer(TAG);
+        if(PluginSettings.isForeground()) {
+            startForeground(NOTIFICATION_ID, this.getNotification());
+        }
 
+        this.mTimer = new Timer(TAG);
         this.mTimerTask = getTimerTask();
         this.mTimer.schedule(this.mTimerTask, timerInterval, timerInterval);
 
@@ -72,6 +88,10 @@ public class BackgroundTimerService extends Service {
             } catch (Exception ex) {
                 Log.i(TAG, "exception has occurred - " + ex.getMessage());
             }
+        }
+
+        if(PluginSettings.isForeground()) {
+            stopForeground(true);
         }
 
         this.timerStarted = false;
@@ -106,6 +126,22 @@ public class BackgroundTimerService extends Service {
         startActivity(intent);
     }
 
+    private Notification getNotification() {
+        Context context = getApplicationContext();
+        PackageManager pm = getPackageManager();
+        ApplicationInfo info = context.getApplicationInfo();
+
+        Intent launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                                                .setContentIntent(pendingIntent)
+                                                .setContentTitle(PluginSettings.getNotificationTitle())
+                                                .setContentText(PluginSettings.getNotificationText())
+                                                .setSmallIcon(info.icon);
+
+        return builder.build();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -120,5 +156,10 @@ public class BackgroundTimerService extends Service {
 
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public boolean onUnbind(Intent intent){
+        Log.i(TAG, "onUnbind");
+        return super.onUnbind(intent);
     }
 }

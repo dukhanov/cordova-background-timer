@@ -76,13 +76,7 @@ public class BackgroundTimer extends CordovaPlugin {
         }
 
         if(config != null) {
-            try {
-                PluginSettings.setTimerInterval(config.getInt("timerInterval"));
-                PluginSettings.setStartOnBoot(config.getBoolean("startOnBoot"));
-                PluginSettings.setStopOnTerminate(config.getBoolean("stopOnTerminate"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            PluginSettings.setConfig(config);
         }
     }
 
