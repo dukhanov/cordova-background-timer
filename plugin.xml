@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.skycom.cordova.background-timer"
-    version="0.0.2">
+    version="0.0.3">
 
     <name>BackgroundTimer</name>
     <description></description>
@@ -21,11 +21,13 @@
     <!-- android -->
     <platform name="android">
 		<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <source-file src="src/android/ActivityHelper.java" target-dir="src/com/skycom/cordova/bgt" />
         <source-file src="src/android/BackgroundTimer.java" target-dir="src/com/skycom/cordova/bgt" />
         <source-file src="src/android/BackgroundTimerService.java" target-dir="src/com/skycom/cordova/bgt" />
         <source-file src="src/android/BootReceiver.java" target-dir="src/com/skycom/cordova/bgt" />
 		<source-file src="src/android/PluginSettings.java" target-dir="src/com/skycom/cordova/bgt" />
 		<source-file src="src/android/TimerEvent.java" target-dir="src/com/skycom/cordova/bgt" />		
+		<source-file src="src/android/TimerEventReceiver.java" target-dir="src/com/skycom/cordova/bgt" />		
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service android:name="com.skycom.cordova.bgt.BackgroundTimerService" />
             <receiver android:name="com.skycom.cordova.bgt.BootReceiver" android:enabled="true" android:exported="false">
@@ -33,6 +35,7 @@
                     <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 </intent-filter>
             </receiver>
+            <receiver android:name="com.skycom.cordova.bgt.TimerEventReceiver" />
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
