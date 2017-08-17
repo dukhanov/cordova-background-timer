@@ -15,8 +15,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.Calendar;
-
 public class BackgroundTimer extends CordovaPlugin {
     private static final String TAG = "BGTimer";
     private static final String ACTION_START = "start";
@@ -35,12 +33,6 @@ public class BackgroundTimer extends CordovaPlugin {
         mBackgroundServiceIntent = new Intent(mContext, BackgroundTimerService.class);
         mSettings = PreferenceManager.getDefaultSharedPreferences(mContext);
         PluginSettings.initialize(mSettings);
-
-        Intent launchIntent = activity.getIntent();
-        if (launchIntent != null && launchIntent.hasExtra("forceReload")) {
-            activity.moveTaskToBack(true);
-        }
-
         EventBus.getDefault().register(this);
         Log.i(TAG, "pluginInitialize");
     }
