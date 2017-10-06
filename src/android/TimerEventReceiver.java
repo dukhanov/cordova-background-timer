@@ -14,11 +14,9 @@ public class TimerEventReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        PluginSettings.initialize(preferences);
-        Log.i(TAG, "TIMER TICK");
+        Log.i(TAG, "timer tick");
 
-        if (PluginSettings.isStopOnTerminate() || !PluginSettings.isEnabled()) return;
+        if (!PluginSettings.isEnabled()) return;
 
         EventBus bus = EventBus.getDefault();
         if (bus.hasSubscriberForEvent(TimerEvent.class)) {

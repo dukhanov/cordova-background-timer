@@ -1,5 +1,5 @@
 {
-    "version": "0.0.3",
+    "version": "0.0.4",
     "name": "com.skycom.cordova.background-timer",
     "cordova_name": "BackgroundTimer",
     "description": "BackgroundTimer Plugin",
