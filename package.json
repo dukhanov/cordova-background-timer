@@ -1,6 +1,6 @@
 {
     "version": "0.0.4",
-    "name": "com.skycom.cordova.background-timer",
+    "name": "cordova-background-timer",
     "cordova_name": "BackgroundTimer",
     "description": "BackgroundTimer Plugin",
     "license": "Apache License Version 2.0",
